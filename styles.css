@@ -1,0 +1,8 @@
+.bold {
+    font-weight:bold;
+    display:inline;
+}
+.photo-container {
+    display: flex;
+    gap: 20px; /* Abstand zwischen den Fotos */
+}
