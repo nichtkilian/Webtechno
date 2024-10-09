@@ -6,42 +6,52 @@
     <title>Registrierungsformular</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<footer>
 
-</footer>
 <body>
-    <h2>Registrieren</h2>
-    <div>
-        <form action="/register" method="POST">        
-            <label for="salutation">Anrede:</label>
-        
-            <select id="salutation" name="salutation" required>
-                <option>Frau</option>
-                <option>Herr</option>
-                <option>Divers</option>
-            </select>
-        
-            <label for="name">Vorname:</label>
-            <input id="name" type="text" pattern="[A-za-z\-]+" name="name" required>
-                    
-            <label for="surname">Nachname:</label>
-            <input id="surname" type="text" pattern="[A-za-z\-]+" name="surname" required>
-                    
-            <label for="email">Email:</label>
-            <input id="name" type="email" name="email" required>
-        
-            <label for="user">Username:</label>
-            <input id="user" type="text" name="user" required>
-                    
-            <label for="password">Passwort:</label>
-            <input id="password" type="password" name="password" required>
-        
-            <label for="password_check">Passwort wiederholen:</label>
-            <input id="confirm_password" type="password" name="confirm_password" required>
-        
-            <input type="submit" value="Registrieren"></input>
-                    
-        </form>
-    </div>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="help.html">Startseite/Hilfe</a></li>
+            <li><a href="impressum.html">Impressum</a></li>
+            <li><a href="registration.html">Registrierung</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
+    
+    <section id="registration">
+        <h2>Registrieren</h2>
+        <div>
+            <form action="/register" method="POST">        
+                <label for="salutation">Anrede:</label>
+            
+                <select id="salutation" name="salutation" required>
+                    <option>Frau</option>
+                    <option>Herr</option>
+                    <option>Divers</option>
+                </select>
+            
+                <label for="name">Vorname:</label>
+                <input id="name" type="text" pattern="[A-za-z\-]+" name="name" required>
+                        
+                <label for="surname">Nachname:</label>
+                <input id="surname" type="text" pattern="[A-za-z\-]+" name="surname" required>
+                        
+                <label for="email">Email:</label>
+                <input id="name" type="email" name="email" required>
+            
+                <label for="user">Username:</label>
+                <input id="user" type="text" name="user" required>
+                        
+                <label for="password">Passwort:</label>
+                <input id="password" type="password" name="password" required>
+            
+                <label for="password_check">Passwort wiederholen:</label>
+                <input id="confirm_password" type="password" name="confirm_password" required>
+            
+                <input type="submit" value="Registrieren"></input>
+                        
+            </form>
+        </div>
+    </section>
 </body>
 </html>
