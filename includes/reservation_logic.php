@@ -52,17 +52,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strtotime($checkout) <= strtotime($checkin)) {
         $error_message = "Das Abreisedatum muss nach dem Anreisedatum liegen.";
     } else {
-    // Reservierungsdaten (vorerst nur anzeigen)
-    // Dieser Teil kann später erweitert werden, um ihn in einer Datenbank zu speichern
-    $confirmation_message = "
-    <div style='margin-top: 20px; padding: 15px; border: 1px solid green; background-color: #f9fff9;'>
-        <h3>Reservierung erfolgreich!</h3>
-        <p><strong>Anreisedatum:</strong> $checkin</p>
-        <p><strong>Abreisedatum:</strong> $checkout</p>
-        <p><strong>Frühstück:</strong> " . ($breakfast == 'yes' ? 'Ja' : 'Nein') . "</p>
-        <p><strong>Parkplatz:</strong> " . ($parking == 'yes' ? 'Ja' : 'Nein') . "</p>
-        <p><strong>Haustiere:</strong> " . (!empty($pets) ? $pets : 'Keine') . "</p>
-    </div>";
+        // Reservierungsdaten (vorerst nur anzeigen)
+        // Dieser Teil kann später erweitert werden, um ihn in einer Datenbank zu speichern
+        $confirmation_message = "
+        <div style='margin-top: 20px; padding: 15px; border: 1px solid green; background-color: #f9fff9;'>
+            <h3>Reservierung erfolgreich!</h3>
+            <p><strong>Anreisedatum:</strong> $checkin</p>
+            <p><strong>Abreisedatum:</strong> $checkout</p>
+            <p><strong>Frühstück:</strong> " . ($breakfast == 'yes' ? 'Ja' : 'Nein') . "</p>
+            <p><strong>Parkplatz:</strong> " . ($parking == 'yes' ? 'Ja' : 'Nein') . "</p>
+            <p><strong>Haustiere:</strong> " . (!empty($pets) ? $pets : 'Keine') . "</p>
+        </div>";
     }
 }
 ?>

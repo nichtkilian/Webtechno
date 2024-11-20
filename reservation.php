@@ -10,11 +10,11 @@
     <?php include 'includes/nav.php'; ?>
 
     <?php
-            // Fehlermeldung anzeigen, falls vorhanden
-            if (!empty($error_message)) {
-                echo "<p style='color:red;'>$error_message</p>";
-            }
-        ?>
+        // Fehlermeldung anzeigen, falls vorhanden
+        if (!empty($error_message)) {
+            echo "<p style='color:red;'>$error_message</p>";
+        }
+    ?>
 
     <div class="container">
         <form action="" method="POST">
@@ -77,6 +77,7 @@
             </tr>
             <?php endforeach; ?>
         </table>
+        
     </div>
 
     <?php include 'includes/footer.php'; ?>
