@@ -1,4 +1,0 @@
-Chr1stoph96,$2y$10$ih5RjvbmskhDY4OMC9wIauiQVUzS/9oldXZhSOvU3IxFBt5LZ1a.K
-testUser2,$2y$10$uYnyVMn8KrczjPgak7.wxuCc72505jcZSQOEIxdREZaPg5zRuJjK.
-kamil,$2y$10$OmKhnBrqgPcBGEkX/nmxhecTYDZcQEX2lTw/foW8qvc4kVjye13Ba
-testuser,$2y$10$vuBYOXDEmQSl3/Sw9CkJ.emxiuxjrYn8XCfu2xS4XD.PiETjgcngC
