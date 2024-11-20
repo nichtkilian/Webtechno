@@ -20,11 +20,11 @@
             <p><div class="fw-bold">Inhaber:</div></p>
             <div class="d-flex">
                 <div class="text-center me-4">
-                    <img src="kamil_bienias.png" alt="Kamil Bienias" class="img-fluid rounded-circle" width="250">
+                    <img src="resources/img/kamil_bienias.png" alt="Kamil Bienias" class="img-fluid rounded-circle" width="250">
                     <p>Kamil Bienias</p>
                 </div>
                 <div class="text-center">
-                    <img src="kilian_baumann.png" alt="Kilian Baumann" class="img-fluid rounded-circle" width="250">
+                    <img src="resources/img/kilian_baumann.png" alt="Kilian Baumann" class="img-fluid rounded-circle" width="250">
                     <p>Kilian Baumann</p>
                 </div>
             </div>

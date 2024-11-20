@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <?php include("includes/head.php") ?>
-    <?php include("includes/logincheck.php") ?>
+    <?php require_once("includes/logincheck.php") ?>
 
     <title>Login Formular</title>
 </head>
@@ -15,8 +15,8 @@
     <?php
     // Begrüßung, falls Benutzer eingeloggt ist
     if (isset($_SESSION['username'])) {
-        echo "Willkommen, " . htmlspecialchars($_SESSION['username']) . "!";
-        echo '<br><a href="logout.php">Abmelden</a>';
+        echo "<h2>Willkommen, " . htmlspecialchars($_SESSION['username']) . "!</h2>";
+        echo '<a class="btn btn-primary" href="logout.php">Logout</a>';
     } else {
         // Login-Formular anzeigen, falls der Benutzer nicht eingeloggt ist
         if (isset($error_message)) {
@@ -44,8 +44,6 @@
     <?php
     }
     ?>
-
-
 
     <?php include("includes/footer.php") ?>
 </body>
