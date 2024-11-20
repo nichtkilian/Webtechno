@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Erfolgreiche Registrierung - Benutzername in Session speichern
             $_SESSION['username'] = $username;
-            header("Location: login.php");  // Weiter zur Willkommensseite
+            header("Location: profile.php");  // Weiter zur Profilseite
             exit();
         }
     }

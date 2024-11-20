@@ -9,7 +9,7 @@
 
 <body>
     <header>
-    <?php include("includes/nav.php") ?>
+        <?php include("includes/nav.php") ?>
     </header>
 
     <div class="bg-light">
