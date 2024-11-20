@@ -2,9 +2,9 @@
 <html lang="de">
 <head>
     <?php include("includes/head.php") ?>
-    <?php require_once("includes/logincheck.php") ?>
+    <?php require_once("includes/login_logic.php") ?>
 
-    <title>Login Formular</title>
+    <title>Login</title>
 </head>
 
 <body>
@@ -12,38 +12,31 @@
     <?php include("includes/nav.php") ?>
     </header>
 
-    <?php
-    // Begrüßung, falls Benutzer eingeloggt ist
-    if (isset($_SESSION['username'])) {
-        echo "<h2>Willkommen, " . htmlspecialchars($_SESSION['username']) . "!</h2>";
-        echo '<a class="btn btn-primary" href="logout.php">Logout</a>';
-    } else {
-        // Login-Formular anzeigen, falls der Benutzer nicht eingeloggt ist
-        if (isset($error_message)) {
-            echo "<p style='color:red;'>$error_message</p>";
-        }
-    ?>
-      <form class="container my-5" action="" method="POST">
-        <div class="row justify-content-center">
-          <div class="col-md-6">
-            <h2 class="mb-4 text-center">Login</h2>
-            <div class="form-group mb-3">
-              <label for="username" class="form-label">Benutzername</label>
-              <input type="text" name="username" id="username" class="form-control" required>
-            </div>
-            <div class="form-group mb-3">
-              <label for="password" class="form-label">Passwort</label>
-              <input type="password" name="password" id="password" class="form-control" required>
-            </div>
-            <div class="d-grid">
-              <button type="submit" class="btn btn-success">Login</button>
-            </div>
+    <div class="bg-light">
+      <div class="container mt-5">
+          <div class="row justify-content-center">
+              <div class="col-md-6">
+                  <div class="card shadow-sm">
+                      <div class="card-body">
+                          <h1 class="text-center">Login</h1>
+                          <?php if (!empty($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
+                          <form method="POST" action="">
+                              <div class="mb-3">
+                                  <label for="username" class="form-label">Benutzername</label>
+                                  <input type="text" id="username" name="username" class="form-control" required>
+                              </div>
+                              <div class="mb-3">
+                                  <label for="password" class="form-label">Passwort</label>
+                                  <input type="password" id="password" name="password" class="form-control" required>
+                              </div>
+                              <button type="submit" class="btn btn-primary w-100">Einloggen</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
           </div>
-        </div>
-      </form>
-    <?php
-    }
-    ?>
+      </div>
+</div>
 
     <?php include("includes/footer.php") ?>
 </body>

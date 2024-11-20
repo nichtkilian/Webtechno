@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <?php include("includes/head.php") ?>
-    <?php include("includes/registrationcheck.php") ?>
+    <?php require_once("includes/registration_logic.php") ?>
 
     <title>Registrierungsformular</title>
 </head>

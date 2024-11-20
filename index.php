@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +12,7 @@
 
 <body>
     <header>
-    <?php include("includes/nav.php") ?>
+        <?php include("includes/nav.php") ?>
     </header>
     
     <h1 class="text-center">Willkommen im WEB Hotel</h1>
