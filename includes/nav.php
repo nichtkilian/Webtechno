@@ -15,6 +15,9 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                 <a class="nav-link <?php echo ($currentPage == 'index.php') ? 'active' : ''; ?>" href="index.php">Startseite</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link <?php echo ($currentPage == 'news.php') ? 'active' : ''; ?>" href="news.php">News</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link <?php echo ($currentPage == 'registration.php') ? 'active' : ''; ?>" href="registration.php">Registrierung</a>
             </li>
             <?php if (isset($_SESSION['user'])): ?>
