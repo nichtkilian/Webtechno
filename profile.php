@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <?php include("includes/head.php"); ?>
-    <?php require_once('includes/profile_logic.php');?>
+    <?php require_once("includes/profile_logic.php"); ?>
 
     <title>Profil</title>
 </head>
@@ -10,43 +10,45 @@
     <header>
         <?php include("includes/nav.php"); ?>
     </header>
-    <div class="container mt-5">
-        <div class="card shadow-sm">
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Profil</h2>
+
+        <!-- Fehler- und Erfolgsmeldungen -->
+        <?php if ($error): ?>
+            <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+        <?php endif; ?>
+        <?php if ($success): ?>
+            <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
+        <?php endif; ?>
+
+        <!-- Benutzerprofil anzeigen -->
+        <div class="card mx-auto" style="max-width: 400px;">
             <div class="card-body">
-                <h1>Profil von <?php echo htmlspecialchars($user['name']); ?></h1>
-                <p><strong>Benutzername:</strong> <?php echo htmlspecialchars($user['username']); ?></p>
-                <p><strong>E-Mail:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-
-                <h2 class="mt-4">Benutzerdaten bearbeiten</h2>
-
-                <?php if (!empty($success)) echo "<div class='alert alert-success'>$success</div>"; ?>
-                <?php if (!empty($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
-
-                <!-- Formular zum Ändern des Benutzernamens -->
-                <form method="POST" action="">
-                    <div class="mb-3">
-                        <label for="new_username" class="form-label">Neuer Benutzername</label>
-                        <input type="text" id="new_username" name="new_username" class="form-control" value="<?php echo htmlspecialchars($user['username']); ?>" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Benutzernamen ändern</button>
-                </form>
-
-                <!-- Passwort ändern -->
-                <h2 class="mt-4">Passwort ändern</h2>
-                <form method="POST" action="">
-                    <div class="mb-3">
-                        <label for="current_password" class="form-label">Aktuelles Passwort</label>
-                        <input type="password" id="current_password" name="current_password" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="new_password" class="form-label">Neues Passwort</label>
-                        <input type="password" id="new_password" name="new_password" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Passwort ändern</button>
-                </form>
-                <p class="mt-4"><a href="logout.php" class="btn btn-danger w-100">Abmelden</a></p>
+                <h5 class="card-title">Benutzername:</h5>
+                <p class="card-text"><?php echo htmlspecialchars($currentUser['username']); ?></p>
+                <h5 class="card-title">Erstellt am:</h5>
+                <p class="card-text"><?php echo date('d.m.Y H:i:s', strtotime($currentUser['created_at'])); ?></p>
             </div>
         </div>
+
+        <!-- Passwort ändern Formular -->
+        <h2 class="text-center mt-4">Passwort ändern</h2>
+        <form action="profile.php" method="post" class="mx-auto" style="max-width: 400px;">
+            <input type="hidden" name="action" value="change_password">
+            <div class="mb-3">
+                <label for="current_password" class="form-label">Aktuelles Passwort:</label>
+                <input type="password" id="current_password" name="current_password" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="new_password" class="form-label">Neues Passwort:</label>
+                <input type="password" id="new_password" name="new_password" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="confirm_new_password" class="form-label">Neues Passwort bestätigen:</label>
+                <input type="password" id="confirm_new_password" name="confirm_new_password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Passwort ändern</button>
+        </form>
     </div>
     <?php include("includes/footer.php"); ?>
 </body>

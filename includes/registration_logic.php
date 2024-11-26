@@ -1,45 +1,62 @@
 <?php
 session_start();
 
-$error_message = "";
+// Pfad zur JSON-Datei, in der die Benutzerdaten gespeichert werden
+$usersFile = 'resources/users.json';
 
-// Der Speicherort der Benutzerdaten-Datei
-$data_file = "users.txt";
+// Sicherstellen, dass der Ordner und die Datei existieren
+if (!is_dir(dirname($usersFile))) {
+    mkdir(dirname($usersFile), 0777, true);
+}
+if (!file_exists($usersFile)) {
+    file_put_contents($usersFile, json_encode([])); // Leere JSON-Datei erstellen
+}
 
 // Überprüfen, ob das Formular abgeschickt wurde
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Benutzerdaten aus dem Formular abrufen und bereinigen
     $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
-    $confirm_password = trim($_POST['confirm_password']);
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirm_password'];
 
-    // Überprüfen, ob das Passwort zweimal gleich eingegeben wurde
-    if ($password !== $confirm_password) {
-        $error_message = "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut.";
-    } else {
-        // Überprüfen, ob der Benutzername bereits existiert
-        $users = file($data_file, FILE_IGNORE_NEW_LINES);  // Alle Benutzerdaten aus der Datei lesen
-        foreach ($users as $user) {
-            list($existing_username, $existing_password) = explode(",", $user);
-            if ($existing_username === $username) {
-                $error_message = "Dieser Benutzername ist bereits vergeben.";
-                break;
-            }
-        }
+    // Überprüfen, ob alle Felder ausgefüllt sind
+    if (empty($username) || empty($password) || empty($confirmPassword)) {
+        $_SESSION['error'] = "Bitte alle Felder ausfüllen.";
+        header('Location: registration.php');
+        exit;
+    }
 
-        // Wenn der Benutzername noch nicht existiert, speichern wir die neuen Daten
-        if (empty($error_message)) {
-            // Das Passwort in einem sicheren Hash speichern
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    // Überprüfen, ob das Passwort mit der Bestätigung übereinstimmt
+    if ($password !== $confirmPassword) {
+        $_SESSION['error'] = "Passwörter stimmen nicht überein.";
+        header('Location: registration.php');
+        exit;
+    }
 
-            // Benutzerdaten in die Datei schreiben
-            file_put_contents($data_file, $username . "," . $hashed_password . PHP_EOL, FILE_APPEND);
+    // Bestehende Benutzer aus der JSON-Datei laden
+    $users = json_decode(file_get_contents($usersFile), true);
 
-            // Erfolgreiche Registrierung - Benutzername in Session speichern
-            $_SESSION['username'] = $username;
-            header("Location: profile.php");  // Weiter zur Profilseite
-            exit();
+    // Überprüfen, ob der Benutzername bereits existiert
+    foreach ($users as $user) {
+        if ($user['username'] === $username) {
+            $_SESSION['error'] = "Benutzername ist bereits vergeben.";
+            header('Location: registration.php');
+            exit;
         }
     }
+
+    // Neuen Benutzer hinzufügen
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT); // Passwort sicher hashen
+    $users[] = [
+        'username' => $username,
+        'password' => $hashedPassword,
+        'created_at' => date('Y-m-d H:i:s')
+    ];
+
+    // Benutzer in der JSON-Datei speichern
+    file_put_contents($usersFile, json_encode($users));
+
+    $_SESSION['success'] = "Registrierung erfolgreich!";
+    header('Location: login.php'); // Weiterleitung zur Login-Seite
+    exit;
 }
 ?>
