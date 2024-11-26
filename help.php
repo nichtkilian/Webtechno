@@ -5,19 +5,19 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include("includes/head.php") ?>
+    <?php include("includes/head.php"); ?>
 
     <title>Hilfe zur Hotelreservierung</title>
 </head>
 
 <body>
     <header>
-        <?php include("includes/nav.php") ?>
+        <?php include("includes/nav.php"); ?>
     </header>
     
     <section class="container my-4">
         <header class="mb-4">
-            <h1 class="text-center">Hilfe zur Hotelreservierung</h1>
+            <h2 class="text-center">Hilfe zur Hotelreservierung</h2>
             <ul class="nav nav-tabs justify-content-center">
                 <li class="nav-item"><a class="nav-link" href="#reservierung">Reservierung vornehmen</a></li>
                 <li class="nav-item"><a class="nav-link" href="#aenderungen">Buchungs&auml;nderungen und -stornierungen</a></li>
@@ -133,6 +133,6 @@ session_start();
             </div>
         </div>
     </section>
-    <?php include("includes/footer.php") ?>
+    <?php include("includes/footer.php"); ?>
 </body>
 </html>

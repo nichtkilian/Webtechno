@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <?php include("includes/head.php") ?>
-    <?php require_once("includes/reservation_logic.php") ?>
+    <?php include("includes/head.php"); ?>
+    <?php require_once("includes/reservation_logic.php"); ?>
 
     <title>Zimmerreservierung</title>
 </head>
@@ -80,6 +80,6 @@
         
     </div>
 
-    <?php include 'includes/footer.php'; ?>
+    <?php include("includes/footer.php"); ?>
 </body>
 </html>

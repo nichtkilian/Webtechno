@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <?php include("includes/head.php") ?>
-    <?php require_once("includes/login_logic.php") ?>
+    <?php include("includes/head.php"); ?>
+    <?php require_once("includes/login_logic.php"); ?>
 
     <title>Login</title>
 </head>
 
 <body>
     <header>
-        <?php include("includes/nav.php") ?>
+        <?php include("includes/nav.php"); ?>
     </header>
 
     <div class="bg-light">
@@ -38,6 +38,6 @@
       </div>
 </div>
 
-    <?php include("includes/footer.php") ?>
+    <?php include("includes/footer.php"); ?>
 </body>
 </html>

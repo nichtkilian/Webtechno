@@ -5,7 +5,7 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include("includes/head.php") ?>
+    <?php include("includes/head.php"); ?>
 
     <title>Willkommen im WEB Hotel</title>
 </head>
@@ -18,6 +18,6 @@ session_start();
     <h1 class="text-center">Willkommen im WEB Hotel</h1>
     <img src="resources/img/web-hotel.jpg" class="img-thumbnail rounded mx-auto d-block" alt="WEB Hotel">
 
-    <?php include("includes/footer.php") ?>
+    <?php include("includes/footer.php"); ?>
 </body>
 </html>

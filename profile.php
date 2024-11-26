@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <?php include("includes/head.php") ?>
+    <?php include("includes/head.php"); ?>
     <?php require_once('includes/profile_logic.php');?>
 
     <title>Profil</title>
 </head>
 <body class="bg-light">
     <header>
-        <?php include("includes/nav.php") ?>
+        <?php include("includes/nav.php"); ?>
     </header>
     <div class="container mt-5">
         <div class="card shadow-sm">
@@ -48,5 +48,6 @@
             </div>
         </div>
     </div>
+    <?php include("includes/footer.php"); ?>
 </body>
 </html>

@@ -5,14 +5,14 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include("includes/head.php") ?>
+    <?php include("includes/head.php"); ?>
 
     <title>Impressum</title>
 </head>
 
 <body>
     <header>
-      <?php include("includes/nav.php") ?>
+      <?php include("includes/nav.php"); ?>
     </header>
     
     <h1 class="text-center">Impressum</h1>
@@ -64,6 +64,6 @@ session_start();
         </div>
       </div>
     </section>
-    <?php include("includes/footer.php") ?>
+    <?php include("includes/footer.php"); ?>
 </body>
 </html>

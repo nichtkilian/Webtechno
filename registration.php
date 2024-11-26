@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include("includes/head.php") ?>
-    <?php require_once("includes/registration_logic.php") ?>
+    <?php include("includes/head.php"); ?>
+    <?php require_once("includes/registration_logic.php"); ?>
 
     <title>Registrierungsformular</title>
 </head>
 
 <body>
     <header>
-    <?php include("includes/nav.php") ?>
+    <?php include("includes/nav.php"); ?>
     </header>
 
     <?php
@@ -80,6 +80,6 @@
         </div>
       </div>                     
     </form>
-    <?php include("includes/footer.php") ?>
+    <?php include("includes/footer.php"); ?>
 </body>
 </html>
