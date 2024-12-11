@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Überprüfen, ob die JSON-Datei existiert und Benutzerdaten enthält
     if (!file_exists($usersFile)) {
-        $_SESSION['error'] = "Keine Benutzer gefunden. Bitte registrieren Sie sich zuerst.";
         header('Location: login.php');
         exit;
     }
@@ -32,11 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (password_verify($password, $user['password'])) {
                 // Login erfolgreich
                 $_SESSION['user'] = $username;
-                $_SESSION['success'] = "Login erfolgreich!";
                 header('Location: profile.php'); // Weiterleitung zum Profil
                 exit;
             } else {
-                $_SESSION['error'] = "Falsches Passwort.";
+                // Passwort fehlerhaft
+                $_SESSION['error'] = "Benutzername oder Passwort fehlerhaft.";
                 header('Location: login.php');
                 exit;
             }
@@ -44,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Wenn kein Benutzername übereinstimmt
-    $_SESSION['error'] = "Benutzername nicht gefunden.";
+    $_SESSION['error'] = "Benutzername oder Passwort fehlerhaft.";
     header('Location: login.php');
     exit;
 }
