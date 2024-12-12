@@ -12,6 +12,13 @@
     </header>
 
     <div class="container my-5">
+        <!-- Erfolg- oder Fehlermeldungen anzeigen -->
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
+        <?php endif; ?>
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success"><?php echo $_SESSION['success']; unset($_SESSION['success']); ?></div>
+        <?php endif; ?>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>News Verwaltung</h2>
             <?php if (isset($_SESSION['user'])): ?>
@@ -44,7 +51,7 @@
         <h2 class="mb-4">Alle News</h2>
         <div class="row">
             <?php if (!empty($newsData)): ?>
-                <?php foreach (array_reverse($newsData) as $news): ?>
+                <?php foreach ($newsData as $news): ?>
                     <div class="col-md-6 mb-4">
                         <div class="card">
                             <?php if (!empty($news['image'])): ?>

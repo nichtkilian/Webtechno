@@ -1,53 +1,69 @@
 <?php
+//Datenbankverbindung herstellen
+require 'config/dbaccess.php';
+$conn = getDatabaseConnection();
+
 session_start();
 
-// Pfad zur JSON-Datei und zum Bilder-Ordner
-$newsFile = 'resources/news.json';
+// Pfad zum zum Bilder-Ordner
 $imageDir = 'images/';
 
-// Sicherstellen, dass der Ordner und die JSON-Datei existieren
-if (!is_dir(dirname($newsFile))) {
-    mkdir(dirname($newsFile), 0777, true); // Ordner erstellen
-}
-if (!file_exists($newsFile)) {
-    file_put_contents($newsFile, json_encode([])); // Leere JSON-Datei erstellen
-}
 if (!is_dir($imageDir)) {
     mkdir($imageDir, 0777, true); // Bilder-Ordner erstellen
 }
 
 // Hochladen von Bildern und Hinzufügen von News (nur für eingeloggte Benutzer)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user'])) {
+
     $title = $_POST['title'];
     $description = $_POST['description'];
-    $imagePath = '';
+    $imagePath = $_POST['image'] ?? null; // Optionales Bild;
 
     // Bild-Upload
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $fileName = time() . '_' . basename($_FILES['image']['name']);
-        $targetFilePath = $imageDir . $fileName;
+        $file_type = mime_content_type($_FILES['image']['tmp_name']);
 
-        // Bild speichern
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
-            $imagePath = $targetFilePath;
+        // Zulässige MIME-Dateitypen für Bilder
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+        
+        if (in_array($file_type, $allowed_types)) {
+            $fileName = basename($_FILES['image']['name']);
+            $targetFilePath = $imageDir . $fileName;
+    
+            // Bild speichern
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
+                $imagePath = $targetFilePath;
+            }
+        } else {
+            $_SESSION['error'] = "Fehler: Nur JPG-, PNG- oder GIF-Dateien sind erlaubt.";
+            header('Location: news.php');
+            exit;
         }
     }
 
-    // News-Daten lesen
-    $newsData = json_decode(file_get_contents($newsFile), true);
+    $sql = "INSERT INTO news (title, description, image, created_at) VALUES (?, ?, ?, NOW())";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('sss', $title, $description, $imagePath);
 
-    // Neue News hinzufügen
-    $newsData[] = [
-        'title' => $title,
-        'description' => $description,
-        'image' => $imagePath,
-        'created_at' => date('Y-m-d H:i:s')
-    ];
+    if ($stmt->execute()) {
+        $_SESSION['success'] = "Newsbeitrag erfolgreich hinzugefügt!";
+    } else {
+        $_SESSION['error'] = "Fehler: " . $stmt->error;
+    }
 
-    // News-Daten speichern
-    file_put_contents($newsFile, json_encode($newsData));
+    $stmt->close();
 }
 
-// News abrufen
-$newsData = json_decode(file_get_contents($newsFile), true);
+// Abrufen der News aus der Datenbank
+$sql = "SELECT * FROM news ORDER BY created_at DESC";
+$result = $conn->query($sql);
+$newsData = [];
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $newsData[] = $row;
+    }
+}
+
+$conn->close();
 ?>
