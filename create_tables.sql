@@ -7,9 +7,9 @@ CREATE TABLE news (
 );
 
 INSERT INTO news (title, description, image, created_at) VALUES
-('Neuer Wellness-Bereich er&ouml;ffnet', 'Wir freuen uns, unseren neuen Wellness-Bereich zu pr&auml;sentieren! Besuchen Sie uns und genie&szlig;en Sie entspannende Massagen, eine Sauna und vieles mehr.', 'images/wellness.jpg', '2024-11-01 10:00:00'),
-('Saisonales Herbst-Men&uuml; verf&uuml;gbar', 'Unser K&uuml;chenchef hat ein besonderes Herbst-Men&uuml; f&uuml;r Sie zusammengestellt. Genie&szlig;en Sie saisonale Spezialit&auml;ten mit K&uuml;rbis, Wild und mehr.', 'images/herbst-menu.jpg', '2024-11-10 15:30:00'),
-('Familienangebote im Dezember', 'Planen Sie Ihre Weihnachtsferien bei uns! Im Dezember bieten wir spezielle Familienangebote mit Kinderaktivit&auml;ten und Festtagsmen&uuml;s.', 'images/familienangebote.jpg', '2024-11-20 08:00:00');
+('Neuer Wellness-Bereich eröffnet', 'Wir freuen uns, unseren neuen Wellness-Bereich zu präsentieren! Besuchen Sie uns und genießen Sie entspannende Massagen, eine Sauna und vieles mehr.', 'images/wellness.jpg', '2024-11-01 10:00:00'),
+('Saisonales Herbst-Menü verfügbar', 'Unser Küchenchef hat ein besonderes Herbst-Menü für Sie zusammengestellt. Genießen Sie saisonale Spezialitäten mit Kürbis, Wild und mehr.', 'images/herbst-menu.jpg', '2024-11-10 15:30:00'),
+('Familienangebote im Dezember', 'Planen Sie Ihre Weihnachtsferien bei uns! Im Dezember bieten wir spezielle Familienangebote mit Kinderaktivitäten und Festtagsmenüs.', 'images/familienangebote.jpg', '2024-11-20 08:00:00');
 
 
 CREATE TABLE reservations (
