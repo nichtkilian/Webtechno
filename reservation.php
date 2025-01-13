@@ -1,15 +1,3 @@
-<?php
-
-// Pfad zur JSON-Datei
-$reservationsFile = 'resources/reservations.json';
-
-// Reservierungen laden
-$reservations = [];
-if (file_exists($reservationsFile)) {
-    $reservations = json_decode(file_get_contents($reservationsFile), true);
-}
-?>
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -90,8 +78,8 @@ if (file_exists($reservationsFile)) {
                         <tr>
                             <td><?php echo date('d.m.Y', strtotime($reservation['checkin'])); ?></td>
                             <td><?php echo date('d.m.Y', strtotime($reservation['checkout'])); ?></td>
-                            <td><?php echo htmlspecialchars($reservation['breakfast']); ?></td>
-                            <td><?php echo htmlspecialchars($reservation['parking']); ?></td>
+                            <td><?php echo htmlspecialchars($reservation['breakfast'] ? 'Ja' : 'Nein'); ?></td>
+                            <td><?php echo htmlspecialchars($reservation['parking'] ? 'Ja' : 'Nein'); ?></td>
                             <td><?php echo htmlspecialchars($reservation['pets']); ?></td>
                             <td><?php echo htmlspecialchars($reservation['status']); ?></td>
                             <td><?php echo date('d.m.Y H:i:s', strtotime($reservation['created_at'])); ?></td>

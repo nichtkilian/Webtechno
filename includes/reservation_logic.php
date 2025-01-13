@@ -1,21 +1,21 @@
 <?php
 session_start();
 
+//Datenbankverbindung herstellen
+require 'config/dbaccess.php';
+$conn = getDatabaseConnection();
+
 // Sollte man sich abmelden während man auf der Zimmerreservierungsseite ist, wird man zum Login weitergeleitet
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit;
 }
 
-// Pfad zur JSON-Datei
-$reservationsFile = 'resources/reservations.json';
-
-// Sicherstellen, dass der Ordner und die Datei existieren
-if (!is_dir(dirname($reservationsFile))) {
-    mkdir(dirname($reservationsFile), 0777, true);
-}
-if (!file_exists($reservationsFile)) {
-    file_put_contents($reservationsFile, json_encode([])); // Leere JSON-Datei erstellen
+// Funktion zum Abrufen der Reservierungen aus der Datenbank
+function getReservations($conn) {
+    $stmt = $conn->prepare("SELECT * FROM reservations");
+    $stmt->execute();
+    return $stmt->get_result();
 }
 
 // Überprüfen, ob das Formular abgeschickt wurde
@@ -25,8 +25,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $checkin = $_POST['checkin'];
     $checkout = $_POST['checkout'];
-    $breakfast = $_POST['breakfast'];
-    $parking = $_POST['parking'];
+    // In True/False konvertieren zur Speicherung in der Datenbank
+    if ($_POST['breakfast'] == 'yes') {
+        $breakfast = true;
+    } else {
+        $breakfast = false;
+    }
+    if ($_POST['parking'] == 'yes') {
+        $parking = true;
+    } else {
+        $parking = false;
+    }
     $pets = $_POST['pets'];
 
     // An- und Abreisedatum validieren
@@ -55,23 +64,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $reservation = [
             'checkin' => $checkin,
             'checkout' => $checkout,
-            'breakfast' => isset($_POST['breakfast']) ? 'Ja' : 'Nein',
-            'parking' => isset($_POST['parking']) ? 'Ja' : 'Nein',
+            'breakfast' => $breakfast,
+            'parking' => $parking,
             'pets' => htmlspecialchars($_POST['pets']),
             'status' => 'neu', // Standard-Status
             'created_at' => date('Y-m-d H:i:s'),
         ];
 
         // Bestehende Reservierungen laden
-        $reservations = json_decode(file_get_contents($reservationsFile), true);
+        $reservations = getReservations($conn);
 
         // Neue Reservierung hinzufügen
-        $reservations[] = $reservation;
+        $sql_insert = "INSERT INTO reservations (checkin, checkout, breakfast, parking, pets, status, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())";
+        $stmt_insert = $conn->prepare($sql_insert);
+        $stmt_insert->bind_param('ssiiss', $reservation['checkin'], $reservation['checkout'], $reservation['breakfast'], $reservation['parking'], $reservation['pets'], $reservation['status']);
 
-        // Aktualisierte Reservierungen in der Datei speichern
-        file_put_contents($reservationsFile, json_encode($reservations));
+        if ($stmt_insert->execute()) {
+            $_SESSION['success'] = "Reservierung erfolgreich angelegt!";
+        } else {
+            $_SESSION['error'] = "Fehler beim Anlegen der Reservierung: " . $stmt_insert->error;
+        }
 
-        $_SESSION['success'] = "Reservierung erfolgreich angelegt!";
+        $stmt_insert->close();       
     }
 }
+
+// Reservierungen laden
+$reservations = getReservations($conn);
+
 ?>

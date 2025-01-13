@@ -1,50 +1,40 @@
 <?php
 session_start();
 
-// Pfad zur JSON-Datei, in der die Benutzerdaten gespeichert werden
-$usersFile = 'resources/users.json';
+//Datenbankverbindung herstellen
+require 'config/dbaccess.php';
+$conn = getDatabaseConnection();
 
-// Überprüfen, ob das Formular abgeschickt wurde
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
+    $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Überprüfen, ob die Felder ausgefüllt sind
-    if (empty($username) || empty($password)) {
-        $_SESSION['error'] = "Bitte Benutzername und Passwort ausfüllen.";
-        header('Location: login.php');
-        exit;
-    }
+    $sql = "SELECT password FROM users WHERE username = ?";
 
-    // Überprüfen, ob die JSON-Datei existiert und Benutzerdaten enthält
-    if (!file_exists($usersFile)) {
-        header('Location: login.php');
-        exit;
-    }
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $stmt->store_result();
 
-    // Benutzerdaten aus der JSON-Datei laden
-    $users = json_decode(file_get_contents($usersFile), true);
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($stored_password_hash);
+        $stmt->fetch();
 
-    // Benutzer suchen und Passwort überprüfen
-    foreach ($users as $user) {
-        if ($user['username'] === $username) {
-            if (password_verify($password, $user['password'])) {
-                // Login erfolgreich
-                $_SESSION['user'] = $username;
-                header('Location: profile.php'); // Weiterleitung zum Profil
-                exit;
-            } else {
-                // Passwort fehlerhaft
-                $_SESSION['error'] = "Benutzername oder Passwort fehlerhaft.";
-                header('Location: login.php');
-                exit;
-            }
+        // Passwort überprüfen
+        if (password_verify($password, $stored_password_hash)) {
+            $_SESSION['success'] = "Login erfolgreich!";
+            // Login erfolgreich
+            $_SESSION['user'] = $username;
+            header('Location: profile.php'); // Weiterleitung zum Profil
+        } else {
+            $_SESSION['error'] = "Benutzername oder Passwort fehlerhaft.";    
         }
+    } else {
+        $_SESSION['error'] = "Benutzername oder Passwort fehlerhaft.";    
     }
-
-    // Wenn kein Benutzername übereinstimmt
-    $_SESSION['error'] = "Benutzername oder Passwort fehlerhaft.";
-    header('Location: login.php');
-    exit;
+    
+    $stmt->close();
 }
+
+$conn->close();
 ?>

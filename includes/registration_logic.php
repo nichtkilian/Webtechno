@@ -1,20 +1,13 @@
 <?php
 session_start();
 
-// Pfad zur JSON-Datei, in der die Benutzerdaten gespeichert werden
-$usersFile = 'resources/users.json';
+//Datenbankverbindung herstellen
+require 'config/dbaccess.php';
+$conn = getDatabaseConnection();
 
-// Sicherstellen, dass der Ordner und die Datei existieren
-if (!is_dir(dirname($usersFile))) {
-    mkdir(dirname($usersFile), 0777, true);
-}
-if (!file_exists($usersFile)) {
-    file_put_contents($usersFile, json_encode([])); // Leere JSON-Datei erstellen
-}
-
-// Überprüfen, ob das Formular abgeschickt wurde
+// Handle user registration
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
+    $username = $_POST['username'];
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirm_password'];
 
@@ -32,31 +25,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Bestehende Benutzer aus der JSON-Datei laden
-    $users = json_decode(file_get_contents($usersFile), true);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $confirmPassword = password_hash($_POST['confirm_password'], PASSWORD_DEFAULT);
 
     // Überprüfen, ob der Benutzername bereits existiert
-    foreach ($users as $user) {
-        if ($user['username'] === $username) {
-            $_SESSION['error'] = "Benutzername ist bereits vergeben.";
-            header('Location: registration.php');
+    $sql_check = "SELECT id FROM users WHERE username = ?";
+    $stmt_check = $conn->prepare($sql_check);
+    $stmt_check->bind_param('s', $username);
+    $stmt_check->execute();
+    $stmt_check->store_result();
+
+    if ($stmt_check->num_rows > 0) {
+        $_SESSION['error'] = "Fehler: Der Benutzername '$username' ist bereits vergeben.";
+    } else {
+        // Neuen Benutzer registrieren
+        $sql_insert = "INSERT INTO users (username, password, created_at) VALUES (?, ?, NOW())";
+        $stmt_insert = $conn->prepare($sql_insert);
+        $stmt_insert->bind_param('ss', $username, $password);
+
+        if ($stmt_insert->execute()) {
+            $_SESSION['success'] = "Registrierung erfolgreich!";
+            header('Location: login.php'); // Weiterleitung zur Login-Seite
             exit;
+        } else {
+            $_SESSION['error'] = "Fehler beim Registrieren des Benutzers: " . $stmt_insert->error;
         }
+
+        $stmt_insert->close();
     }
-
-    // Neuen Benutzer hinzufügen
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT); // Passwort sicher hashen
-    $users[] = [
-        'username' => $username,
-        'password' => $hashedPassword,
-        'created_at' => date('Y-m-d H:i:s')
-    ];
-
-    // Benutzer in der JSON-Datei speichern
-    file_put_contents($usersFile, json_encode($users));
-
-    $_SESSION['success'] = "Registrierung erfolgreich!";
-    header('Location: login.php'); // Weiterleitung zur Login-Seite
-    exit;
+    $stmt_check->close();
 }
+
+$conn->close();
+
 ?>
