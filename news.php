@@ -61,6 +61,12 @@
                                 <h5 class="card-title"><?php echo htmlspecialchars($news['title']); ?></h5>
                                 <p class="card-text"><?php echo nl2br(htmlspecialchars($news['description'])); ?></p>
                                 <p class="text-muted" style="font-size: 0.9rem;">Erstellt am: <?php echo htmlspecialchars($news['created_at']); ?></p>
+                                <?php if (isset($_SESSION['user']) && $_SESSION['role'] === 'admin'): ?>
+                                    <form method="post" class="mt-3">
+                                        <input type="hidden" name="delete_news_id" value="<?php echo $news['id']; ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm">Löschen</button>
+                                    </form>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

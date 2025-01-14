@@ -13,7 +13,7 @@ if (!is_dir($imageDir)) {
 }
 
 // Hochladen von Bildern und Hinzufügen von News (nur für eingeloggte Benutzer)
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user']) && !isset($_POST['delete_news_id'])) {
 
     $title = $_POST['title'];
     $description = $_POST['description'];
@@ -52,6 +52,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user'])) {
     }
 
     $stmt->close();
+}
+
+// News löschen
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_news_id'])) {
+    $newsId = $_POST['delete_news_id'];
+
+    // Abrufen des Bildpfads aus der Datenbank
+    $stmt = $conn->prepare("SELECT image FROM news WHERE id = ?");
+    $stmt->bind_param('i', $newsId);
+    $stmt->execute();
+    $stmt->bind_result($imagePath);
+    $stmt->fetch();
+    $stmt->close();
+
+    // News löschen
+    $stmt = $conn->prepare("DELETE FROM news WHERE id = ?");
+    $stmt->bind_param('i', $newsId);
+
+    if ($stmt->execute()) {
+        // Bild löschen, falls vorhanden
+        if ($imagePath && file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+        $_SESSION['success'] = "Newsbeitrag erfolgreich gelöscht!";
+    } else {
+        $_SESSION['error'] = "Fehler beim Löschen des Newsbeitrags.";
+    }
+
+    $stmt->close();
+    header('Location: news.php');
+    exit;
 }
 
 // Abrufen der News aus der Datenbank
