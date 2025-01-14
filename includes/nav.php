@@ -35,6 +35,11 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     <li class="nav-item">
                         <a class="nav-link <?php echo ($currentPage == 'profile.php') ? 'active' : ''; ?>" href="profile.php">Profil</a>
                     </li>
+                    <?php if ($_SESSION['role'] === 'admin'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo ($currentPage == 'usermanagement.php') ? 'active' : ''; ?>" href="usermanagement.php">Benutzerverwaltung</a>
+                        </li>
+                    <?php endif; ?>
                     <li class="nav-item">
                         <a class="nav-link <?php echo ($currentPage == 'logout.php') ? 'active' : ''; ?>" href="logout.php">Abmelden</a>
                     </li>
