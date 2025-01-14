@@ -14,7 +14,7 @@ if (!isset($_SESSION['user'])) {
 
 $sql = "SELECT * FROM users WHERE username = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('i', $_SESSION['user']);
+$stmt->bind_param('s', $_SESSION['user']);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -28,9 +28,38 @@ if ($result->num_rows > 0) {
 }
 $stmt->close();
 
-// Verarbeitung der Passwortänderung
+// Verarbeitung der Stammdatenänderung
 $error = '';
 $success = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
+    // Daten aus dem Formular abrufen
+    $salutation = $_POST['salutation'] ?? '';
+    $name = $_POST['name'] ?? '';
+    $surname = $_POST['surname'] ?? '';
+    $email = $_POST['email'] ?? '';
+
+    // Datenbank-Update durchführen
+    $stmt = $conn->prepare("UPDATE users SET salutation = ?, name = ?, surname = ?, email = ? WHERE id = ?");
+    $stmt->bind_param("ssssi", $salutation, $name, $surname, $email, $currentUser['id']);
+    $result = $stmt->execute();
+
+    if ($result) {
+        $success = "Profil erfolgreich aktualisiert.";
+
+        // Benutzerinformationen nach dem Update neu laden
+        $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->bind_param("i", $currentUser['id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $currentUser = $result->fetch_assoc();
+    } else {
+        $error = "Beim Aktualisieren des Profils ist ein Fehler aufgetreten.";
+    }
+
+    $stmt->close();
+}
+
+// Verarbeitung der Passwortänderung
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'change_password') {
     $currentPassword = $_POST['current_password'];
     $newPassword = $_POST['new_password'];
@@ -50,9 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 // Neues Passwort hashen und speichern
                 $currentUser['password'] = password_hash($newPassword, PASSWORD_DEFAULT);
                 // Passwort in der Datenbank updaten
-                $sql = "UPDATE users SET password = ? WHERE username = ?";
+                $sql = "UPDATE users SET password = ? WHERE id = ?";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param('ss', $currentUser['password'], $currentUser['username']);
+                $stmt->bind_param('si', $currentUser['password'], $currentUser['id']);
             
                 if ($stmt->execute()) {
                     $success = "Passwort erfolgreich geändert.";

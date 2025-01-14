@@ -7,6 +7,10 @@ $conn = getDatabaseConnection();
 
 // Handle user registration
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $salutation = $_POST['salutation'];
+    $name = $_POST['name'];
+    $surname = $_POST['surname'];
+    $email = $_POST['email'];
     $username = $_POST['username'];
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirm_password'];
@@ -39,9 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['error'] = "Fehler: Der Benutzername '$username' ist bereits vergeben.";
     } else {
         // Neuen Benutzer registrieren
-        $sql_insert = "INSERT INTO users (username, password, created_at) VALUES (?, ?, NOW())";
+        $sql_insert = "INSERT INTO users (username, password, salutation, name, surname, email, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())";
         $stmt_insert = $conn->prepare($sql_insert);
-        $stmt_insert->bind_param('ss', $username, $password);
+        $stmt_insert->bind_param('ssssss', $username, $password, $salutation, $name, $surname, $email);
 
         if ($stmt_insert->execute()) {
             $_SESSION['success'] = "Registrierung erfolgreich!";

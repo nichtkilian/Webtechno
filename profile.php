@@ -26,6 +26,48 @@
             <div class="card-body">
                 <h5 class="card-title">Benutzername:</h5>
                 <p class="card-text"><?php echo htmlspecialchars($currentUser['username']); ?></p>
+                <form class="was-validated" action="profile.php" method="POST">
+                    <div>
+                        <h5 class="card-title">
+                            <label for="salutation">Anrede:</label>
+                        </h5>
+                        <select name="salutation" id="salutation" class="form-select" required>
+                        <option value="Frau" <?php echo ($currentUser['salutation'] === 'Frau') ? 'selected' : ''; ?>>Frau</option>
+                        <option value="Herr" <?php echo ($currentUser['salutation'] === 'Herr') ? 'selected' : ''; ?>>Herr</option>
+                        <option value="Divers" <?php echo ($currentUser['salutation'] === 'Divers') ? 'selected' : ''; ?>>Divers</option>
+                        </select>
+                    </div>
+                    <div>
+                        <h5 class="card-title">
+                            <label for="name">Vorname:</label>
+                        </h5>
+                        <input type="text" name="name" id="name" class="form-control" required value="<?php echo htmlspecialchars($currentUser['name']); ?>">
+                        <div class="invalid-feedback">
+                        Bitte Vorname eingeben
+                        </div>  
+                    </div>
+                    <div>
+                        <h5 class="card-title">
+                            <label for="surname">Nachname:</label>
+                        </h5>
+                        <input type="text" name="surname" id="surname" class="form-control" required value="<?php echo htmlspecialchars($currentUser['surname']); ?>">
+                        <div class="invalid-feedback">
+                        Bitte Nachname eingeben
+                        </div>    
+                    </div>
+                    <div>
+                        <h5 class="card-title">
+                            <label for="email">Email:</label>
+                        </h5>
+                        <input type="email" name="email" id="email" class="form-control" required value="<?php echo htmlspecialchars($currentUser['email']); ?>">
+                        <div class="invalid-feedback">
+                        Bitte E-Mail-Adresse eingeben
+                        </div>  
+                    </div>
+                    <div class="mt-3 d-grid">
+                        <button type="submit" class="btn btn-primary w-100" name="update_profile">Persönliche Daten ändern</button>
+                    </div>                   
+                </form>
                 <h5 class="card-title">Erstellt am:</h5>
                 <p class="card-text"><?php echo date('d.m.Y H:i:s', strtotime($currentUser['created_at'])); ?></p>
             </div>
