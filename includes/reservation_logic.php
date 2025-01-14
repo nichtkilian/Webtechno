@@ -11,15 +11,29 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
-// Funktion zum Abrufen der Reservierungen aus der Datenbank
-function getReservations($conn) {
+// Funktionen zum Abrufen der Reservierungen aus der Datenbank
+function getAllReservations($conn) {
     $stmt = $conn->prepare("SELECT * FROM reservations");
     $stmt->execute();
     return $stmt->get_result();
 }
 
-// Überprüfen, ob das Formular abgeschickt wurde
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+function getUserReservations($conn, $user) {
+    $stmt = $conn->prepare("SELECT * FROM reservations where username = ?");
+    $stmt->bind_param('s', $user);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+function getReservations($conn, $statusFilter) {
+    $stmt = $conn->prepare("SELECT * FROM reservations where status = ?");
+    $stmt->bind_param('s', $statusFilter);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+// Reservierung abschicken
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user']) && $_SESSION['role'] === 'user') {
 
     $currentDate = date('Y-m-d'); // Heutiges Datum im Format "YYYY-MM-DD"
     
@@ -62,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Reservierungsdaten sammeln
         $reservation = [
+            'username' => $_SESSION['user'],
             'checkin' => $checkin,
             'checkout' => $checkout,
             'breakfast' => $breakfast,
@@ -72,12 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         // Bestehende Reservierungen laden
-        $reservations = getReservations($conn);
+        $userReservations = getUserReservations($conn, $_SESSION['user']);
 
         // Neue Reservierung hinzufügen
-        $sql_insert = "INSERT INTO reservations (checkin, checkout, breakfast, parking, pets, status, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())";
+        $sql_insert = "INSERT INTO reservations (username, checkin, checkout, breakfast, parking, pets, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
         $stmt_insert = $conn->prepare($sql_insert);
-        $stmt_insert->bind_param('ssiiss', $reservation['checkin'], $reservation['checkout'], $reservation['breakfast'], $reservation['parking'], $reservation['pets'], $reservation['status']);
+        $stmt_insert->bind_param('sssiiss', $reservation['username'], $reservation['checkin'], $reservation['checkout'], $reservation['breakfast'], $reservation['parking'], $reservation['pets'], $reservation['status']);
 
         if ($stmt_insert->execute()) {
             $_SESSION['success'] = "Reservierung erfolgreich angelegt!";
@@ -89,7 +104,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Reservierungen laden
-$reservations = getReservations($conn);
-
+// Benutzer-Reservierungen laden
+$userReservations = getUserReservations($conn, $_SESSION['user']);
+// Alle Reservierungen laden
+$allReservations = getAllReservations($conn);
 ?>

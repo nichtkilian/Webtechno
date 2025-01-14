@@ -28,8 +28,8 @@
             <?php endif; ?>
         </div>
 
-        <!-- Formular nur für eingeloggte Benutzer anzeigen -->
-        <?php if (isset($_SESSION['user'])): ?>
+        <!-- Formular nur für eingeloggte Admins anzeigen -->
+        <?php if (isset($_SESSION['user']) && $_SESSION['role'] === 'admin'): ?>
             <form action="" method="post" enctype="multipart/form-data" class="mb-5">
                 <div class="mb-3">
                     <label for="title" class="form-label">Titel:</label>

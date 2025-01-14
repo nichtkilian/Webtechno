@@ -14,6 +14,7 @@ INSERT INTO news (title, description, image, created_at) VALUES
 
 CREATE TABLE reservations (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
     checkin DATE NOT NULL,
     checkout DATE NOT NULL,
     breakfast BOOLEAN DEFAULT FALSE,
