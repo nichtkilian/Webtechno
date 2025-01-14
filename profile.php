@@ -11,7 +11,15 @@
         <?php include("includes/nav.php"); ?>
     </header>
     <div class="container my-5">
-        <h2 class="text-center mb-4">Profil</h2>
+        <h2 class="text-center mb-4">Profil (
+            <?php if ($_SESSION['role'] === 'admin'): ?>
+                Admin
+            <?php endif; ?>
+            <?php if ($_SESSION['role'] === 'user'): ?>
+                Benutzer
+            <?php endif; ?>
+            )
+        </h2>
 
         <!-- Fehler- und Erfolgsmeldungen -->
         <?php if ($error): ?>
