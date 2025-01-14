@@ -38,6 +38,13 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     <li class="nav-item">
                         <a class="nav-link <?php echo ($currentPage == 'logout.php') ? 'active' : ''; ?>" href="logout.php">Abmelden</a>
                     </li>
+                    <li class="nav-item">
+                        <div class="nav-link fw-light fst-italic">
+                            <?php if (isset($_SESSION['user'])): ?>
+                                <span class="navbar-user">Angemeldet als: <?php echo htmlspecialchars($_SESSION['user']); ?></span>
+                            <?php endif; ?>
+                        </div>
+                    </li>
                 <?php else: ?>
                     <li class="nav-item">
                         <a class="nav-link <?php echo ($currentPage == 'login.php') ? 'active' : ''; ?>" href="login.php">Login</a>
