@@ -12,7 +12,9 @@ ob_start();
     <title>Zimmerreservierung</title>
 </head>
 <body>
-    <?php include 'includes/nav.php'; ?>
+    <header>
+        <?php include("includes/nav.php"); ?>
+    </header>
 
     <!-- Reservierungsformular -->
     <div class="container my-5">

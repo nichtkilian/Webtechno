@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <?php include("includes/head.php"); ?>
     <?php require_once("includes/registration_logic.php"); ?>
@@ -9,7 +9,7 @@
 
 <body>
     <header>
-    <?php include("includes/nav.php"); ?>
+      <?php include("includes/nav.php"); ?>
     </header>
 
     <div class="container my-5">

@@ -3,7 +3,7 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <?php include("includes/head.php"); ?>
 
@@ -12,7 +12,7 @@ session_start();
 
 <body>
     <header>
-      <?php include("includes/nav.php"); ?>
+        <?php include("includes/nav.php"); ?>
     </header>
     
     <h1 class="text-center">Impressum</h1>
