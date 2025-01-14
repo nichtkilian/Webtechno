@@ -27,6 +27,7 @@ CREATE TABLE reservations (
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     role ENUM('admin', 'user') DEFAULT 'user',
+    status ENUM('aktiv', 'inaktiv') DEFAULT 'aktiv',
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     salutation ENUM('Frau', 'Herr', 'Divers') NOT NULL,
