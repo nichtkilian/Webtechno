@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Passwort überprüfen
         if (password_verify($password, $stored_password_hash)) {
             $_SESSION['success'] = "Login erfolgreich!";
-            // Login erfolgreich
+            // Login erfolgreich - Unterscheidung zwischen normalem User und Admin
+            echo $_SESSION['user'];
             $_SESSION['user'] = $username;
             header('Location: profile.php'); // Weiterleitung zum Profil
         } else {

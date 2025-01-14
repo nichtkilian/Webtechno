@@ -25,6 +25,7 @@ CREATE TABLE reservations (
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    role ENUM('admin', 'user') DEFAULT 'user',
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     salutation ENUM('Frau', 'Herr', 'Divers') NOT NULL,
@@ -33,3 +34,6 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO users (role, username, password, salutation, name, surname, email) VALUES
+('admin', 'admin', '$2y$10$pEvJ1jccrXxCX6ovuu7KKeeeYAoQikNvhKih1IRKDA6K1tk7tnl1C', 'Herr', 'Kamil', 'Bienias', 'wi23b117@technikum-wien.at');
