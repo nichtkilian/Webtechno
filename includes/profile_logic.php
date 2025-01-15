@@ -12,6 +12,7 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
+
 $sql = "SELECT * FROM users WHERE username = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('s', $_SESSION['user']);
@@ -45,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 
     if ($result) {
         $success = "Profil erfolgreich aktualisiert.";
-
+ 
         // Benutzerinformationen nach dem Update neu laden
         $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
         $stmt->bind_param("i", $currentUser['id']);
@@ -60,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 }
 
 // Verarbeitung der Passwortänderung
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'change_password') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'change_password') {
     $currentPassword = $_POST['current_password'];
     $newPassword = $_POST['new_password'];
     $confirmNewPassword = $_POST['confirm_new_password'];
@@ -71,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     } elseif ($newPassword !== $confirmNewPassword) {        
         $error = "Die neuen Passwörter stimmen nicht überein.";
     } else {
-        if ($currentUser['username'] === $_SESSION['user']) {
+       
             // Überprüfen, ob das aktuelle Passwort korrekt ist
             if (!password_verify($currentPassword, $currentUser['password'])) {
                 $error = "Das aktuelle Passwort ist falsch.";
@@ -90,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 }            
                 $stmt->close();
             }
-        }
+        
     }
 }
 

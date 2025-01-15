@@ -71,8 +71,8 @@
                             </td>
                             <td>
                                 <select name="status" class="form-control">
-                                    <option value="aktiv" <?php echo ($user['status'] === 'aktiv') ? 'selected' : ''; ?>>Aktiv</option>
-                                    <option value="inaktiv" <?php echo ($user['status'] === 'inaktiv') ? 'selected' : ''; ?>>Inaktiv</option>
+                                    <option value="aktiv" <?php echo ($user['status'] === 'aktiv') ? 'selected'; ?>>Aktiv</option>
+                                    <option value="inaktiv" <?php echo ($user['status'] === 'inaktiv') ? 'selected'; ?>>Inaktiv</option>
                                 </select>
                             </td>
                             <td>

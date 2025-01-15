@@ -1,8 +1,3 @@
-<?php
-// Output-Buffering aktivieren
-ob_start();
-?>
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -168,31 +163,7 @@ ob_start();
                 <p>Es sind keine Reservierungen vorhanden.</p>
             <?php endif; ?>
 
-            <?php
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reservation_id'], $_POST['status'])) {
-                $reservationId = $_POST['reservation_id'];
-                $status = $_POST['status'];
-
-                // Header-Sendeprüfung
-                if (headers_sent($file, $line)) {
-                    die("Headers already sent in $file on line $line");
-                }
-
-                // Status in der Datenbank aktualisieren
-                $stmt = $conn->prepare("UPDATE reservations SET status = ? WHERE id = ?");
-                $stmt->bind_param("si", $status, $reservationId);
-                if ($stmt->execute()) {
-                    $_SESSION['success'] = "Status erfolgreich aktualisiert.";
-                } else {
-                    $_SESSION['error'] = "Fehler beim Aktualisieren des Status.";
-                }
-                $stmt->close();
-
-                // Seite neu laden
-                header("Location: reservation.php");
-                exit;
-            }
-            ?>
+            
         <?php endif; ?>
 
     </div>

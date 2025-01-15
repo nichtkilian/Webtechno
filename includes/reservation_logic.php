@@ -33,7 +33,7 @@ function getReservations($conn, $statusFilter) {
 }
 
 // Reservierung abschicken
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user']) && $_SESSION['role'] === 'user') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['role'] === 'user') {
 
     $currentDate = date('Y-m-d'); // Heutiges Datum im Format "YYYY-MM-DD"
     
@@ -103,6 +103,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user']) && $_SESSI
         $stmt_insert->close();       
     }
 }
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reservation_id'], $_POST['status'])) {
+    $reservationId = $_POST['reservation_id'];
+    $status = $_POST['status'];
+
+    // Status in der Datenbank aktualisieren
+    $stmt = $conn->prepare("UPDATE reservations SET status = ? WHERE id = ?");
+    $stmt->bind_param("si", $status, $reservationId);
+    if ($stmt->execute()) {
+        $_SESSION['success'] = "Status erfolgreich aktualisiert.";
+    } else {
+        $_SESSION['error'] = "Fehler beim Aktualisieren des Status.";
+    }
+    $stmt->close();
+
+}
+            
 
 // Benutzer-Reservierungen laden
 $userReservations = getUserReservations($conn, $_SESSION['user']);

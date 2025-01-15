@@ -17,11 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($stored_password_hash, $role, $status);
+        $stmt->bind_result($password_hash, $role, $status);
         $stmt->fetch();
 
         // Passwort überprüfen
-        if (password_verify($password, $stored_password_hash)) {
+        if (password_verify($password, $password_hash)) {
             if ($status === 'aktiv') {
                 $_SESSION['success'] = "Login erfolgreich!";
                 // Login erfolgreich
