@@ -10,7 +10,7 @@ $stmt = $conn->prepare("SELECT id, role, status, username, salutation, name, sur
 $stmt->execute();
 $users = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// Benutzerstatus ändern
+// Benutzerdaten ändern
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user_id'])) {
     $userId = $_POST['update_user_id'];
     $role = $_POST['role'];
