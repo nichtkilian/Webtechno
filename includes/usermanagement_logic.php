@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user_id'])) {
 // Passwort zurücksetzen
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset_user_id'])) {
     $resetUserId = $_POST['reset_user_id'];
-    $newPassword = password_hash("default123", PASSWORD_BCRYPT);
+    $newPassword = password_hash("default123", PASSWORD_DEFAULT);
 
     $resetStmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
     $resetStmt->bind_param("si", $newPassword, $resetUserId);
