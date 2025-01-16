@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 }
 
 // Verarbeitung der Passwortänderung
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'change_password') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'change_password') {
     $currentPassword = $_POST['current_password'];
     $newPassword = $_POST['new_password'];
     $confirmNewPassword = $_POST['confirm_new_password'];
